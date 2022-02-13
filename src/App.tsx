@@ -30,25 +30,12 @@ const Logout = () => {
 }
 
 const PrivateRoute = (props: {
-  children: React.ReactNode
+  children: React.ReactNode,
+  to: string,
+  reversed?: boolean
 }): React.ReactElement => {
   const { isUserLoggedIn, doneloading } = useContext(LoginContext);
-  if (!isUserLoggedIn && doneloading) return <Navigate to="/login" />
-  if (doneloading) {
-    return (
-      <React.Fragment>
-        {props.children}
-      </React.Fragment>
-    )
-  }
-  return (<React.Fragment></React.Fragment>)
-}
-
-const PrivateRouteReversed = (props: {
-  children: React.ReactNode
-}): React.ReactElement => {
-  const { isUserLoggedIn, doneloading } = useContext(LoginContext);
-  if (isUserLoggedIn && doneloading) return <Navigate to="/" />
+  if ((props.reversed ? isUserLoggedIn : !isUserLoggedIn) && doneloading) return <Navigate to={props.to ?? "/"} />
   if (doneloading) {
     return (
       <React.Fragment>
@@ -96,17 +83,17 @@ function App() {
         <Routes>
           <Route path="/" element={<div>Home page</div>} />
           <Route path="/login" element={
-            <PrivateRouteReversed>
+            <PrivateRoute reversed to="/">
               <div>Login page</div>
-            </PrivateRouteReversed>
+            </PrivateRoute>
           } />
           <Route path="/signup" element={
-            <PrivateRouteReversed>
+            <PrivateRoute reversed to="/">
               <div>Sign up page</div>
-            </PrivateRouteReversed>
+            </PrivateRoute>
           } />
           <Route path="/logout" element={
-            <PrivateRoute>
+            <PrivateRoute to="/login">
               <Logout />
             </PrivateRoute>
           } />
