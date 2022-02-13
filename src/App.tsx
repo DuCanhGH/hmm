@@ -79,7 +79,6 @@ function App() {
             :
             <Link to="/logout">Log out</Link>
         }
-
         <Routes>
           <Route path="/" element={<div>Home page</div>} />
           <Route path="/login" element={
